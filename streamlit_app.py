@@ -18,6 +18,48 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Footer function
+def render_footer():
+    """Render footer with donation section and author credit"""
+    st.markdown("---")
+    
+    # Donation Section
+    st.markdown("### 💰 You can help me by Donating")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown(
+            """
+            <a href="https://www.buymeacoffee.com/nsrawat" target="_blank" style="text-decoration: none;">
+                <div style="background-color: #FFDD00; color: black; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">
+                    ☕ Buy Me a Coffee
+                </div>
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
+    with col2:
+        st.markdown(
+            """
+            <a href="https://paypal.me/NRawat710" target="_blank" style="text-decoration: none;">
+                <div style="background-color: #00457C; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">
+                    💳 PayPal
+                </div>
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
+    
+    # Author Credit
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style='text-align: center; padding: 20px 0;'>
+            <p style='margin: 0; font-size: 14px;'>Made with ❤️ by <a href="https://nsrawat.in" target="_blank" style="text-decoration: underline; color: #1f77b4;">N S Rawat</a></p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 # Title
 st.title("📊 Google Analytics Data Cleaning & Visualization")
 st.markdown("Professional data wrangling & business intelligence project")
@@ -198,41 +240,4 @@ elif page == "Quality Report":
             st.metric("❌ Failed", failed)
 
 # Footer - Always visible at the bottom
-st.markdown("---")
-
-# Donation Section
-st.markdown("### 💰 You can help me by Donating")
-col1, col2 = st.columns(2)
-with col1:
-    st.markdown(
-        """
-        <a href="https://www.buymeacoffee.com/nsrawat" target="_blank" style="text-decoration: none;">
-            <div style="background-color: #FFDD00; color: black; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">
-                ☕ Buy Me a Coffee
-            </div>
-        </a>
-        """,
-        unsafe_allow_html=True
-    )
-with col2:
-    st.markdown(
-        """
-        <a href="https://paypal.me/nsrawat" target="_blank" style="text-decoration: none;">
-            <div style="background-color: #00457C; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">
-                💳 PayPal
-            </div>
-        </a>
-        """,
-        unsafe_allow_html=True
-    )
-
-# Author Credit
-st.markdown("---")
-st.markdown(
-    """
-    <div style='text-align: center; padding: 20px 0;'>
-        <p style='margin: 0; font-size: 14px;'>Made with ❤️ by <a href="https://nsrawat.in" target="_blank" style="text-decoration: underline; color: #1f77b4;">N S Rawat</a></p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+render_footer()
