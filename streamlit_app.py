@@ -3,63 +3,167 @@ Streamlit App for Google Analytics Data Cleaning & Visualization
 Deploy this app on Streamlit Cloud for free interactive visualizations
 """
 
-import streamlit as st
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from data_cleaning_analysis import DataCleaningAnalysis
+# #region agent log
+import json, os
+_log_debug_enabled = True
+_log_path = None
+try:
+    _log_dir = os.path.join(os.path.dirname(__file__), '.cursor')
+    _log_path = os.path.join(_log_dir, 'debug.log')
+    os.makedirs(_log_dir, exist_ok=True)
+except Exception:
+    _log_debug_enabled = False
+    _log_path = None
 
-# Page configuration
-st.set_page_config(
-    page_title="Google Analytics Data Cleaning & Visualization",
-    page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+def log_debug(location, message, data=None, hypothesis_id=None):
+    if not _log_debug_enabled:
+        return
+    try:
+        with open(_log_path, 'a', encoding='utf-8') as f:
+            f.write(json.dumps({'location': location, 'message': message, 'data': data or {}, 'timestamp': __import__('time').time(), 'sessionId': 'debug-session', 'runId': 'run1', 'hypothesisId': hypothesis_id}) + '\n')
+    except:
+        pass
+log_debug('streamlit_app.py:13', 'Starting imports', {}, 'A')
+# #endregion
+
+try:
+    import streamlit as st
+    log_debug('streamlit_app.py:17', 'streamlit imported successfully', {}, 'A')
+except Exception as e:
+    log_debug('streamlit_app.py:17', 'streamlit import failed', {'error': str(e)}, 'A')
+    raise
+
+# CRITICAL: st.set_page_config() MUST be called before any other Streamlit commands
+# #region agent log
+try:
+    log_debug('streamlit_app.py:30', 'Before st.set_page_config (early)', {}, 'B')
+    st.set_page_config(
+        page_title="Google Analytics Data Cleaning & Visualization",
+        page_icon="📊",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+    log_debug('streamlit_app.py:37', 'st.set_page_config completed successfully (early)', {}, 'B')
+except Exception as e:
+    log_debug('streamlit_app.py:37', 'st.set_page_config failed (early)', {'error': str(e), 'error_type': type(e).__name__}, 'B')
+    raise
+# #endregion
+
+try:
+    import pandas as pd
+    log_debug('streamlit_app.py:20', 'pandas imported successfully', {}, 'A')
+except Exception as e:
+    log_debug('streamlit_app.py:20', 'pandas import failed', {'error': str(e)}, 'A')
+    raise
+
+try:
+    import numpy as np
+    log_debug('streamlit_app.py:21', 'numpy imported successfully', {}, 'A')
+except Exception as e:
+    log_debug('streamlit_app.py:21', 'numpy import failed', {'error': str(e)}, 'A')
+    raise
+
+try:
+    import matplotlib
+    matplotlib.use('Agg')  # Set non-interactive backend for Streamlit Cloud
+    import matplotlib.pyplot as plt
+    log_debug('streamlit_app.py:25', 'matplotlib imported successfully with Agg backend', {}, 'A')
+except Exception as e:
+    log_debug('streamlit_app.py:25', 'matplotlib import failed', {'error': str(e)}, 'A')
+    raise
+
+try:
+    import seaborn as sns
+    log_debug('streamlit_app.py:23', 'seaborn imported successfully', {}, 'A')
+except Exception as e:
+    log_debug('streamlit_app.py:23', 'seaborn import failed', {'error': str(e)}, 'A')
+    raise
+
+try:
+    from data_cleaning_analysis import DataCleaningAnalysis
+    log_debug('streamlit_app.py:26', 'DataCleaningAnalysis imported successfully', {}, 'A')
+except Exception as e:
+    log_debug('streamlit_app.py:26', 'DataCleaningAnalysis import failed', {'error': str(e), 'error_type': type(e).__name__}, 'A')
+    raise
 
 # Footer function
 def render_footer():
     """Render footer with donation section and author credit"""
-    # Create a container for the footer to ensure it always renders
-    footer = st.container()
-    with footer:
-        st.markdown("---")
-        
-        # Donation Section
-        st.markdown("#### 💰 You can help me by Donating")
-        col1, col2 = st.columns(2)
-        with col1:
+    # #region agent log
+    try:
+        log_debug('streamlit_app.py:45', 'render_footer called', {}, 'E')
+        # Create a container for the footer to ensure it always renders
+        footer = st.container()
+        log_debug('streamlit_app.py:48', 'footer container created', {}, 'E')
+        with footer:
+            # #endregion
+            st.markdown("---")
+            
+            # Donation Section
+            st.markdown("#### 💰 You can help me by Donating")
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown(
+                    '<a href="https://www.buymeacoffee.com/nsrawat" target="_blank" style="text-decoration: none;"><div style="background-color: #FFDD00; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">☕ Buy Me a Coffee</div></a>',
+                    unsafe_allow_html=True
+                )
+            with col2:
+                st.markdown(
+                    '<a href="https://paypal.me/NRawat710" target="_blank" style="text-decoration: none;"><div style="background-color: #00457C; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">💳 PayPal</div></a>',
+                    unsafe_allow_html=True
+                )
+            
+            # Author Credit
+            st.markdown("---")
             st.markdown(
-                '<a href="https://www.buymeacoffee.com/nsrawat" target="_blank" style="text-decoration: none;"><div style="background-color: #FFDD00; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">☕ Buy Me a Coffee</div></a>',
+                '<div style="text-align: center; padding: 20px 0;"><p style="margin: 0; font-size: 14px;">Made with ❤️ by <a href="https://nsrawat.in" target="_blank" style="text-decoration: underline; color: #1f77b4;">N S Rawat</a></p></div>',
                 unsafe_allow_html=True
             )
-        with col2:
-            st.markdown(
-                '<a href="https://paypal.me/NRawat710" target="_blank" style="text-decoration: none;"><div style="background-color: #00457C; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; display: inline-block; width: 100%;">💳 PayPal</div></a>',
-                unsafe_allow_html=True
-            )
-        
-        # Author Credit
-        st.markdown("---")
-        st.markdown(
-            '<div style="text-align: center; padding: 20px 0;"><p style="margin: 0; font-size: 14px;">Made with ❤️ by <a href="https://nsrawat.in" target="_blank" style="text-decoration: underline; color: #1f77b4;">N S Rawat</a></p></div>',
-            unsafe_allow_html=True
-        )
+            # #region agent log
+            log_debug('streamlit_app.py:56', 'render_footer completed successfully', {}, 'E')
+    except Exception as e:
+        log_debug('streamlit_app.py:56', 'render_footer failed', {'error': str(e), 'error_type': type(e).__name__}, 'E')
+        raise
+    # #endregion
 
-# Title
-st.title("📊 Google Analytics Data Cleaning & Visualization")
-st.markdown("Professional data wrangling & business intelligence project")
+# Main app execution wrapped in error handler
+# #region agent log
+try:
+    log_debug('streamlit_app.py:120', 'Starting main app execution', {}, 'F')
+    # Title
+    log_debug('streamlit_app.py:122', 'Before rendering title', {}, 'C')
+    st.title("📊 Google Analytics Data Cleaning & Visualization")
+    st.markdown("Professional data wrangling & business intelligence project")
+    log_debug('streamlit_app.py:125', 'Title rendered successfully', {}, 'C')
+except Exception as e:
+    log_debug('streamlit_app.py:125', 'Title rendering failed', {'error': str(e), 'error_type': type(e).__name__}, 'C')
+    st.error(f"Error initializing app: {str(e)}")
+    st.exception(e)
+    raise
+# #endregion
 
 # Sidebar
-st.sidebar.header("Navigation")
-page = st.sidebar.selectbox(
-    "Choose a page",
-    ["Home", "Data Overview", "Data Cleaning", "Visualizations", "Quality Report"]
-)
+try:
+    log_debug('streamlit_app.py:68', 'Before rendering sidebar', {}, 'C')
+    st.sidebar.header("Navigation")
+    page = st.sidebar.selectbox(
+        "Choose a page",
+        ["Home", "Data Overview", "Data Cleaning", "Visualizations", "Quality Report"]
+    )
+    log_debug('streamlit_app.py:74', 'Sidebar rendered successfully', {'selected_page': page}, 'C')
+except Exception as e:
+    log_debug('streamlit_app.py:74', 'Sidebar rendering failed', {'error': str(e), 'error_type': type(e).__name__}, 'C')
+    raise
 
 if page == "Home":
-    st.header("Project Overview")
+    # #region agent log
+    try:
+        log_debug('streamlit_app.py:78', 'Rendering Home page', {}, 'D')
+        st.header("Project Overview")
+    except Exception as e:
+        log_debug('streamlit_app.py:80', 'Home page rendering failed', {'error': str(e), 'error_type': type(e).__name__}, 'D')
+        raise
+    # #endregion
     st.markdown("""
     This project demonstrates professional-grade data cleaning, transformation, and visualization 
     techniques using real Google Analytics data.
@@ -133,11 +237,17 @@ elif page == "Data Cleaning":
                     tmp_path = tmp_file.name
                 
                 try:
+                    # #region agent log
+                    log_debug('streamlit_app.py:142', 'Before initializing DataCleaningAnalysis', {'tmp_path': tmp_path}, 'A')
                     # Initialize cleaner
                     cleaner = DataCleaningAnalysis(data_path=tmp_path)
+                    log_debug('streamlit_app.py:145', 'DataCleaningAnalysis initialized successfully', {}, 'A')
                     
                     # Run pipeline
+                    log_debug('streamlit_app.py:148', 'Before execute_pipeline', {}, 'A')
                     cleaner.execute_pipeline()
+                    log_debug('streamlit_app.py:150', 'execute_pipeline completed successfully', {}, 'A')
+                    # #endregion
                     
                     st.success("✅ Data cleaning completed!")
                     
@@ -179,12 +289,17 @@ elif page == "Visualizations":
             
             selected_col = st.selectbox("Select column to visualize", numeric_cols)
             
-            fig, ax = plt.subplots(figsize=(10, 6))
-            df[selected_col].hist(bins=50, ax=ax, edgecolor='black')
-            ax.set_title(f'Distribution of {selected_col}')
-            ax.set_xlabel(selected_col)
-            ax.set_ylabel('Frequency')
-            st.pyplot(fig)
+            try:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                df[selected_col].hist(bins=50, ax=ax, edgecolor='black')
+                ax.set_title(f'Distribution of {selected_col}')
+                ax.set_xlabel(selected_col)
+                ax.set_ylabel('Frequency')
+                st.pyplot(fig)
+                plt.close(fig)  # Close figure to free memory
+            except Exception as e:
+                st.error(f"Error creating visualization: {str(e)}")
+                log_debug('streamlit_app.py:190', 'Visualization failed', {'error': str(e), 'column': selected_col}, 'D')
             
             # Statistics
             col1, col2, col3, col4 = st.columns(4)
