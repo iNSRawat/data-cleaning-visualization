@@ -1,5 +1,5 @@
 ---
-title: Data Cleaning & Visualization
+title: Google Analytics Data Cleaning
 emoji: 📊
 colorFrom: blue
 colorTo: purple
