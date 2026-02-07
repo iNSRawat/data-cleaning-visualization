@@ -35,8 +35,11 @@ This repository contains the Data Cleaning & Visualization project (Google Analy
 02_Data_Cleaning_Visualization/
 │
 ├── README.md                          # Project documentation
+├── DEPLOYMENT_GUIDE.md                # Deployment instructions
 ├── data_cleaning_analysis.py          # Main Python cleaning pipeline
 ├── data_cleaning_analysis.ipynb       # Jupyter notebook for interactive analysis
+├── streamlit_app.py                   # Streamlit web application
+├── gradio_app.py                      # Gradio web application
 ├── requirements.txt                   # Python dependencies
 ├── .gitignore                         # Git ignore rules
 │
@@ -47,6 +50,11 @@ This repository contains the Data Cleaning & Visualization project (Google Analy
 │   └── processed/
 │       ├── cleaned_data.csv                # Cleaned and transformed dataset
 │       └── data_quality_report.csv         # Automated quality metrics report
+│
+├── hf_space/
+│   ├── README.md                      # Space documentation
+│   ├── app.py                         # Space application entry point
+│   └── requirements.txt               # Space dependencies
 │
 └── outputs/
     ├── dashboards/
