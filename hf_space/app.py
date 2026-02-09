@@ -324,4 +324,4 @@ with gr.Blocks(title="Google Analytics Data Cleaning & Visualization", theme=gr.
     gr.HTML(footer_html)
 
 if __name__ == "__main__":
-    demo.queue().launch()
+    demo.queue().launch(ssr_mode=False)
