@@ -1,3 +1,15 @@
+---
+title: Google Analytics Data Cleaning
+emoji: 📊
+colorFrom: blue
+colorTo: purple
+sdk: gradio
+sdk_version: 5.9.1
+app_file: gradio_app.py
+pinned: false
+license: mit
+---
+
 # Google Analytics Data Cleaning & Visualization
 
 [<img src="https://www.kaggle.com/static/images/site-logo.svg" alt="Kaggle" height="28"/>](https://www.kaggle.com/code/nsrawat/google-analytics-data-cleaning-visualization)
