@@ -10,7 +10,7 @@ pinned: false
 license: mit
 ---
 
-# Google Analytics Data Cleaning & Visualization ETL Pipeline for Analytics Data
+# Data Cleaning & Visualization, ETL Pipeline for Google Analytics Data
 
 [<img src="https://www.kaggle.com/static/images/site-logo.svg" alt="Kaggle" height="28"/>](https://www.kaggle.com/code/nsrawat/google-analytics-data-cleaning-visualization)
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://data-cleaning-visualization.streamlit.app/)
